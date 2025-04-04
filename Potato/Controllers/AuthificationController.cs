@@ -25,13 +25,15 @@ namespace Potato.Controllers
                 byte[] dehex = Convert.FromHexString(Request.Cookies["UserDTO_Cookie"]);
                 UserDTO userCookie = JsonSerializer.Deserialize<UserDTO>(dehex);
 
-                if (dataDbContext.Users.Any(n => n.Username == userCookie.username && n.Password == Crypto.GetCrypto(userCookie.password)))
+                if (dataDbContext.Users.Any(n => n.Username == userCookie.username
+                    && n.Email == userCookie.email
+                        && n.Password == Crypto.GetCrypto(userCookie.password)))
                 {
                     return RedirectToAction("MainPage", "Main");
                 }
             }
 
-            return RedirectToAction("Login", "LoginRegistration");
+            return RedirectToAction("Login", "Account");
         }
     }
 }

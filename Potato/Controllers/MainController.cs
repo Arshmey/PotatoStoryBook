@@ -23,8 +23,12 @@ namespace Potato.Controllers
         [HttpGet]
         public IActionResult MainPage()
         {
-            Dechipher();
-            return View(user);
+            if (Dechipher())
+            {
+                return View(user);
+            }
+
+            return RedirectToAction("Login", "Account");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
@@ -33,10 +37,16 @@ namespace Potato.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        private void Dechipher()
+        private bool Dechipher()
         {
-            byte[] dehex = Convert.FromHexString(Request.Cookies["UserDTO_Cookie"]);
-            user = JsonSerializer.Deserialize<UserDTO>(dehex);
+            if (Request.Cookies.ContainsKey("UserDTO_Cookie"))
+            {
+                byte[] dehex = Convert.FromHexString(Request.Cookies["UserDTO_Cookie"]);
+                user = JsonSerializer.Deserialize<UserDTO>(dehex);
+                return true;
+            }
+
+            return false;
         }
     }
 }

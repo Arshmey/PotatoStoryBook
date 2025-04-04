@@ -6,13 +6,13 @@ using Potato.Models;
 
 namespace Potato.Controllers
 {
-    public class LoginRegistrationController : Controller
+    public class AccountController : Controller
     {
 
         private readonly ILogger<MainController> logger;
         private readonly DataDbContext usersDbContext;
 
-        public LoginRegistrationController(ILogger<MainController> logger, DataDbContext usersDbContext)
+        public AccountController(ILogger<MainController> logger, DataDbContext usersDbContext)
         {
             this.logger = logger;
             this.usersDbContext = usersDbContext;
@@ -46,7 +46,10 @@ namespace Potato.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (usersDbContext.Users.Any(n => n.Username == user.username && n.Password == Crypto.GetCrypto(user.password)))
+
+                if (usersDbContext.Users.Any(n => n.Username == user.username
+                    && n.Email == user.email
+                        && n.Password == Crypto.GetCrypto(user.password)))
                 {
                     CookieUserCreate(user);
                     return RedirectToAction("MainPage", "Main");

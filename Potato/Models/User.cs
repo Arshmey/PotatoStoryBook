@@ -12,6 +12,7 @@ namespace Potato.Models
         public string Email { get; init; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "This field doesn't empty")]
         public string Password { get; init; }
+        public string Permission { get; init; } = "USER";
 
         public User(string username, string email, string password)
         {
