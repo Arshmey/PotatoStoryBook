@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Potato.DataAccess;
 
 namespace Potato
@@ -11,12 +10,16 @@ namespace Potato
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddSession();
             builder.Services.AddScoped<DataDbContext>();
+            builder.Services.AddScoped<CookieSessionDbContext>();
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
             var database = scope.ServiceProvider.GetService<DataDbContext>();
             database.Database.EnsureCreated();
+            var cookiebase = scope.ServiceProvider.GetService<CookieSessionDbContext>();
+            cookiebase.Database.EnsureCreated();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -29,6 +32,8 @@ namespace Potato
             {
                 app.UseHsts();
             }
+
+            app.UseSession();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

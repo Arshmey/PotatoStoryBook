@@ -1,75 +1,30 @@
 ﻿@{
-    Layout = null;
     ViewData["Title"] = "Registration";
-    <title>@ViewData["Title"] - PotatoStoryBook</title>
+    <link rel="stylesheet" href="~/css/account.css" asp-append-version="true" />
 }
 
-<div>
+<div class="body-div">
     <h2>Registration</h2>
 
     <form method="post" asp-action="CreateAccount">
         <div class="form-group">
-            <label>Никнейм</label>
+            <label>Username</label>
             <input type="text" name="username" required>
         </div>
 
         <div class="form-group">
-            <label>Почта</label>
+            <label>Email</label>
             <input type="email" name="email" required>
         </div>
 
         <div class="form-group">
-            <label>Пароль</label>
+            <label>Password</label>
             <input type="password" name="password" required>
         </div>
 
-        <button type="submit">Зарегистрироваться</button>
+        <button type="submit">Registration</button>
     </form>
 
-    @Html.ActionLink("Уже есть аккаунт? Войти", "Login")
+
+    @Html.ActionLink("You have account? SignIn", "Login")
 </div>
-
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2025 - @DateTime.UtcNow.Year  Arshmey
-    </div>
-</footer>
-
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        max-width: 400px;
-        margin: 50px auto;
-        padding: 20px;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    input {
-        width: 100%;
-        padding: 8px;
-        margin-top: 5px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    button {
-        width: 100%;
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-    }
-
-    a {
-        display: block;
-        text-align: center;
-        margin-top: 15px;
-        color: #4CAF50;
-        text-decoration: none;
-    }
-</style>

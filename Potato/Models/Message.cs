@@ -4,8 +4,8 @@ namespace Potato.Models
 {
     public class Message
     {
-
-        public Guid Id { get; init; }
+        [Key]
+        public Guid MessageId { get; init; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "This field doesn't empty")]
         public string Title { get; init; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "This field doesn't empty")]

@@ -4,8 +4,8 @@ namespace Potato.Models
 {
     public class User
     {
-
-        public Guid Id { get; set; }
+        [Key]
+        public Guid UserId { get; init; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "This field doesn't empty")]
         public string Username { get; init; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "This field doesn't empty")]
@@ -18,7 +18,7 @@ namespace Potato.Models
         {
             Username = username;
             Email = email;
-            Password = Crypto.GetCrypto(password);
+            Password = password;
         }
     }
 }
