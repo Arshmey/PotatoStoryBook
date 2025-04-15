@@ -16,10 +16,10 @@ namespace Potato
 
             var app = builder.Build();
             var scope = app.Services.CreateScope();
-            var database = scope.ServiceProvider.GetService<DataDbContext>();
-            database.Database.EnsureCreated();
-            var cookiebase = scope.ServiceProvider.GetService<CookieSessionDbContext>();
-            cookiebase.Database.EnsureCreated();
+            dynamic getDatabase = scope.ServiceProvider.GetService<DataDbContext>();
+            getDatabase.Database.EnsureCreated();
+            getDatabase = scope.ServiceProvider.GetService<CookieSessionDbContext>();
+            getDatabase.Database.EnsureCreated();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

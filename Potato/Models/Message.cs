@@ -12,14 +12,14 @@ namespace Potato.Models
         public string Content { get; init; }
         [Required(AllowEmptyStrings = false, ErrorMessage = "This field doesn't empty")]
         public string Author { get; init; }
-        public DateTime DateCriation { get; init; }
+        public DateTime DateCreation { get; init; }
 
         public Message(string title, string content, string author)
         {
             Title = title;
             Content = content;
             Author = author;
-            DateCriation = DateTime.UtcNow;
+            DateCreation = DateTime.UtcNow;
         }
 
     }

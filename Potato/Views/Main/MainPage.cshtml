@@ -1,27 +1,21 @@
 ﻿@{
     ViewData["Title"] = "Main";
+    Layout = "_LayoutAditional";
 }
 
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container-fluid">
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Main" asp-action="MainPage">Main</a>
-                    </li>
-                </ul>
-                <a class="nav-link text-dark" asp-controller="Main" asp-action="MainPage">
-                    <div style="margin-left: 35px; font-size: larger">
-                        @Model.username
-                    </div>
-                </a>
-            </div>
-        </div>
-    </nav>
-</header>
-
-<div class="text-center">
-    <h1 class="display-4">@Model.username</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="latest-works-container">
+    <h2>Последние работы</h2>
+    <div class="works-grid">
+        @if (Model.ContainsKey("newMessage"))
+        {
+            foreach (var message in Model["newMessage"])
+            {
+                <div class="work-item">
+                    <h3>@message.Title</h3>
+                    <p>@message.Content</p>
+                    <span class="work-date">@message.DateCreation.ToString("dd.MM.yyyy")</span>
+                </div>
+            }
+        }
+    </div>
 </div>

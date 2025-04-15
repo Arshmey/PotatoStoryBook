@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "User Cabinet";
+    Layout = "_LayoutAditional";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Username</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model["user"].username
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Email</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            @Model["user"].email
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

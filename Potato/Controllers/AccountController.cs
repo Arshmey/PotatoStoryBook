@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Potato.Contract;
@@ -13,12 +14,14 @@ namespace Potato.Controllers
         private readonly ILogger<MainController> logger;
         private readonly DataDbContext dataDbContext;
         private readonly CookieSessionDbContext cookieSessionDbContext;
+        private readonly CancellationToken cancellationToken;
 
         public AccountController(ILogger<MainController> logger, DataDbContext dataDbContext, CookieSessionDbContext cookieSessionDbContext)
         {
             this.logger = logger;
             this.dataDbContext = dataDbContext;
             this.cookieSessionDbContext = cookieSessionDbContext;
+            cancellationToken = new CancellationToken();
         }
 
         [HttpGet]
@@ -38,13 +41,13 @@ namespace Potato.Controllers
         {
             User newUser = new User(user.username, user.email, Crypto.GetCrypto(user.password));
 
-            await dataDbContext.AddAsync(newUser);
-            await dataDbContext.SaveChangesAsync();
+            await dataDbContext.AddAsync(newUser, cancellationToken);
+            await dataDbContext.SaveChangesAsync(cancellationToken);
 
             CookieUser cookieUser = new CookieUser(newUser.UserId);
 
-            await cookieSessionDbContext.AddAsync(cookieUser);
-            await cookieSessionDbContext.SaveChangesAsync();
+            await cookieSessionDbContext.AddAsync(cookieUser, cancellationToken);
+            await cookieSessionDbContext.SaveChangesAsync(cancellationToken);
 
             CookieUserCreate(new CookieDTO(cookieUser.CookieID, cookieUser.UserID));
 
@@ -58,13 +61,13 @@ namespace Potato.Controllers
         {
 
             if (await dataDbContext.Users.AnyAsync(u => u.Username == user.username && u.Email == user.email
-                && u.Password == Crypto.GetCrypto(user.password)))
+                && u.Password == Crypto.GetCrypto(user.password), cancellationToken))
             {
-                User oldUser = await dataDbContext.Users.SingleOrDefaultAsync(u => u.Username == user.username && u.Email == user.email);
+                User oldUser = await dataDbContext.Users.SingleOrDefaultAsync(u => u.Username == user.username && u.Email == user.email, cancellationToken);
                 CookieUser cookieUser = new CookieUser(oldUser.UserId);
 
-                await cookieSessionDbContext.AddAsync(cookieUser);
-                await cookieSessionDbContext.SaveChangesAsync();
+                await cookieSessionDbContext.AddAsync(cookieUser, cancellationToken);
+                await cookieSessionDbContext.SaveChangesAsync(cancellationToken);
 
                 CookieUserCreate(new CookieDTO(cookieUser.CookieID, cookieUser.UserID));
 
@@ -90,8 +93,7 @@ namespace Potato.Controllers
 
         private void UserSessionCreate(User user)
         {
-            string jsonSession = JsonSerializer.Serialize(new UserSessionDTO(user.Username, user.Email, user.Permission));
-            HttpContext.Session.SetString("UserSession", jsonSession);
+            HttpContext.Session.Set("UserSession", JsonSerializer.SerializeToUtf8Bytes(new UserSessionDTO(user.Username, user.Email, user.Permission)));
         }
     }
 }
